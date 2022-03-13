@@ -1,0 +1,265 @@
+swagger: "2.0"
+info:
+  description: ""
+  version: "0.0.1"
+  title: "Todo-Listen-Verwaltung"
+  contact:
+    email: "wichmann@bbs-os-brinkstr.de"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "127.0.0.1:5000"
+basePath: "/"
+tags:
+- name: "Listenverwaltung"
+schemes:
+- "http"
+paths:
+  /list/{list_id}:
+    get:
+      summary: "Get all items from list"
+      description: ""
+      tags:
+      - Listenverwaltung
+      operationId: "getList"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "list_id"
+        type: string
+        description: "list id"
+        required: true
+      responses:
+        "200":
+          description: "List item returned"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TodoEntry"
+        "404":
+          description: "Invalid list id"
+    delete:
+      summary: "Delete a list"
+      description: ""
+      tags:
+      - Listenverwaltung
+      operationId: "deleteList"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "list_id"
+        type: string
+        description: "list id"
+        required: true
+      responses:
+        "200":
+          description: "List was deleted"
+        "404":
+          description: "Invalid list id"
+  /list:
+    post:
+      summary: "Add new list"
+      description: ""
+      tags:
+      - Listenverwaltung
+      operationId: "addList"
+      produces:
+      - "application/json"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "list object"
+        required: true
+        schema:
+          $ref: "#/definitions/TodoList"
+      responses:
+        "200":
+          description: "List added"
+          schema:
+            $ref: "#/definitions/TodoList"
+        "500":
+          description: "List could not be added"
+  /list/{list_id}/entry:
+    post:
+      summary: "Add new list"
+      description: ""
+      tags:
+      - Listenverwaltung
+      operationId: "addListEntry"
+      produces:
+      - "application/json"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "list_id"
+        type: string
+        description: "list id"
+        required: true
+      - in: "body"
+        name: "body"
+        description: "entry object"
+        required: true
+        schema:
+          $ref: "#/definitions/TodoEntry"
+      responses:
+        "200":
+          description: "Entry added"
+          schema:
+            $ref: "#/definitions/TodoEntry"
+        "500":
+          description: "Entry could not be added"
+  /list/{list_id}/entry/{entry_id}:
+    post:
+      summary: "Update Entry"
+      description: ""
+      tags:
+      - Listenverwaltung
+      operationId: "updateEntry"
+      produces:
+      - "application/json"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "list_id"
+        type: string
+        description: "list id"
+        required: true
+      - in: "path"
+        name: "entry_id"
+        type: string
+        description: "entry id"
+        required: true
+      - in: "body"
+        name: "body"
+        description: "entry object"
+        required: true
+        schema:
+          $ref: "#/definitions/TodoEntry"
+      responses:
+        "200":
+          description: "Entry updatet"
+        "500":
+          description: "List could not be added"
+    delete:
+      summary: "delete Entry"
+      description: ""
+      tags:
+      - Listenverwaltung
+      operationId: "deleteEntry"
+      produces:
+      - "application/json"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "list_id"
+        type: string
+        description: "list id"
+        required: true
+      - in: "path"
+        name: "entry_id"
+        type: string
+        description: "entry id"
+        required: true
+      responses:
+        "200":
+          description: "Entry deletet"
+        "500":
+          description: "List could not be added"
+  /users:
+   get:
+      summary: "Get all users"
+      description: ""
+      tags:
+      - Listenverwaltung
+      operationId: "getUsers"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "Users list returned"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/users"
+        "404":
+          description: "Invalid list id"
+  /user:
+     post:
+      summary: "Add User"
+      description: ""
+      tags:
+      - Listenverwaltung
+      operationId: "addUser"
+      produces:
+      - "application/json"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "user object"
+        required: true
+        schema:
+          $ref: "#/definitions/users"
+      responses:
+        "200":
+          description: "Entry updatet"
+        "500":
+          description: "List could not be added"
+  /user/{user_id}:
+     delete:
+      summary: "Delete User"
+      description: ""
+      tags:
+      - Listenverwaltung
+      operationId: "deleteUser"
+      produces:
+      - "application/json"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "user_id"
+        type: string
+        description: "user id"
+        required: true
+      responses:
+        "200":
+          description: "User deletet"
+        "500":
+          description: "User could not be found"
+definitions:
+  TodoList:
+    type: "object"
+    properties:
+      list_id:
+        type: "integer"
+      name:
+        type: "string"
+  TodoEntry:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      description:
+        type: "string"
+      user_id:
+        type: "integer"
+      list_id:
+        type: "integer"
+  users:
+    type: "object"
+    properties:
+      user_id: 
+        type: "integer"
+      name:
+        type: "string"
